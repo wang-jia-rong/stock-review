@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>短线复盘 · 2026年03月20日</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+:root{--red:#e8403a;--green:#1db954;--gold:#c9a227;--bg:#0d0f14;--bg2:#13161e;--border:rgba(255,255,255,0.07);--text:#e8eaf0;--muted:#6b7280;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Noto Serif SC',serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(232,64,58,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(232,64,58,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+.container{max-width:1280px;margin:0 auto;padding:0 24px 60px;position:relative;z-index:1;}
+
+/* utils */
+.mono{font-family:'JetBrains Mono',monospace;} .muted{color:var(--muted);} .nowrap{white-space:nowrap;} .fw6{font-weight:600;} .fs10{font-size:10px;} .fs14{font-size:14px;}
+
+/* HEADER */
+header{padding:48px 0 32px;border-bottom:1px solid var(--border);margin-bottom:28px;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+.header-label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--red);margin-bottom:8px;}
+h1{font-size:clamp(28px,4vw,48px);font-weight:700;color:#fff;} h1 span{color:var(--red);}
+.header-date{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted);margin-top:8px;}
+.header-right{display:flex;gap:24px;align-items:center;}
+.mkt-badge{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.mkt-badge .val{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:var(--red);}
+.mkt-badge .lbl{font-size:11px;color:var(--muted);letter-spacing:1px;}
+.dv{width:1px;height:40px;background:var(--border);}
+
+/* SECTION TITLE */
+.st{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.st::before{content:'';width:3px;height:20px;background:var(--red);border-radius:2px;flex-shrink:0;}
+.st h2{font-size:16px;font-weight:600;color:#fff;letter-spacing:1px;}
+.badge{font-family:'JetBrains Mono',monospace;font-size:10px;background:rgba(232,64,58,0.15);color:var(--red);padding:2px 8px;border-radius:20px;border:1px solid rgba(232,64,58,0.3);}
+
+/* COMMENTARY */
+.commentary{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:0 12px 12px 0;padding:24px;margin-bottom:28px;}
+.commentary ul{list-style:none;display:flex;flex-direction:column;gap:14px;}
+.commentary li{display:flex;gap:12px;font-size:14px;line-height:1.7;color:#c8ccd6;}
+.commentary li::before{content:attr(data-n);font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--red);opacity:.7;flex-shrink:0;margin-top:4px;width:16px;}
+.commentary strong{color:#fff;}
+
+/* METRICS */
+.metrics-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:28px;}
+@media(max-width:900px){.metrics-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:500px){.metrics-grid{grid-template-columns:repeat(2,1fr);}}
+.metric-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;position:relative;overflow:hidden;transition:border-color .2s;cursor:default;}
+.metric-card:hover{border-color:rgba(232,64,58,.4);}
+.metric-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--red),transparent);opacity:0;transition:opacity .2s;}
+.metric-card:hover::after{opacity:1;}
+.metric-name{font-size:11px;color:var(--muted);margin-bottom:8px;letter-spacing:.5px;}
+.metric-val{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;line-height:1;margin-bottom:6px;color:var(--red);}
+.metric-prev{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);}
+
+/* CHART */
+.chart-section{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:28px;}
+.chart-wrapper{height:260px;margin-top:16px;}
+.chart-legend{display:flex;gap:20px;flex-wrap:wrap;margin-top:12px;}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);}
+.legend-dot{width:8px;height:8px;border-radius:50%;}
+
+/* FOCUS CARDS */
+.focus-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px;}
+@media(max-width:700px){.focus-grid{grid-template-columns:1fr;}}
+.focus-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px;position:relative;overflow:hidden;transition:border-color .2s,transform .2s;}
+.focus-card:hover{border-color:rgba(232,64,58,.5);transform:translateY(-2px);}
+.focus-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at top left,rgba(232,64,58,.06),transparent 60%);pointer-events:none;}
+.focus-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
+.focus-name{font-size:17px;font-weight:700;color:#fff;}
+.focus-code{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:2px;}
+.focus-pct{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:var(--red);}
+.focus-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px;}
+.focus-meta-label{font-size:10px;color:var(--muted);margin-bottom:2px;}
+.focus-meta-val{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text);}
+.focus-industry{font-size:11px;color:rgba(201,162,39,.9);background:rgba(201,162,39,.08);border:1px solid rgba(201,162,39,.2);padding:4px 8px;border-radius:4px;display:inline-block;margin-top:12px;}
+.days-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(232,64,58,.15);border:1px solid rgba(232,64,58,.3);color:var(--red);font-family:'JetBrains Mono',monospace;font-size:11px;padding:3px 8px;border-radius:20px;margin-top:8px;}
+
+/* LADDER */
+.ladder-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px;}
+@media(max-width:900px){.ladder-grid{grid-template-columns:1fr;}}
+.ladder-col{background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+.ladder-header{padding:14px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
+.ladder-title{font-size:13px;font-weight:600;}
+.ladder-count{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);}
+.stock-row{display:flex;align-items:center;padding:11px 18px;border-bottom:1px solid rgba(255,255,255,.04);gap:10px;transition:background .15s;}
+.stock-row:hover{background:rgba(255,255,255,.03);}
+.stock-row:last-child{border-bottom:none;}
+.stock-rank{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);width:22px;flex-shrink:0;}
+.stock-name-wrap{min-width:70px;}
+.stock-name{font-size:13px;color:var(--text);font-weight:600;}
+.stock-code{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);}
+.stock-tags{display:flex;flex-wrap:wrap;gap:3px;flex:1;}
+.tag{font-size:9px;padding:2px 5px;border-radius:3px;background:rgba(232,64,58,.1);color:rgba(232,64,58,.8);border:1px solid rgba(232,64,58,.2);white-space:nowrap;}
+.tag.blue{background:rgba(56,132,255,.1);color:rgba(100,160,255,.9);border-color:rgba(56,132,255,.25);}
+.stock-heat{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);flex-shrink:0;text-align:right;min-width:50px;}
+
+/* EVENTS */
+.events-section{background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:28px;}
+.events-table{width:100%;border-collapse:collapse;}
+.events-table th{padding:10px 20px;text-align:left;font-size:11px;color:var(--muted);font-weight:400;letter-spacing:1px;text-transform:uppercase;background:rgba(255,255,255,.02);border-bottom:1px solid var(--border);}
+.events-table td{padding:12px 20px;font-size:13px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:top;}
+.events-table tr:last-child td{border-bottom:none;}
+.events-table tr:hover td{background:rgba(255,255,255,.02);}
+.event-type{display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;font-family:'JetBrains Mono',monospace;}
+.event-type.up{background:rgba(232,64,58,.15);color:var(--red);border:1px solid rgba(232,64,58,.3);}
+.event-type.down{background:rgba(29,185,84,.12);color:var(--green);border:1px solid rgba(29,185,84,.25);}
+.event-detail{font-size:12px;color:var(--muted);line-height:1.5;margin-top:3px;}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.an{opacity:0;animation:fadeUp .5s ease forwards;}
+.d1{animation-delay:.05s;} .d2{animation-delay:.15s;} .d3{animation-delay:.25s;}
+.d4{animation-delay:.35s;} .d5{animation-delay:.45s;} .d6{animation-delay:.55s;}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ① HEADER -->
+<header class="an d1">
+  <div>
+    <div class="header-label">A-SHARE SHORT-TERM REVIEW</div>
+    <h1>短线复盘<span>·</span>收盘点评</h1>
+    <div class="header-date">2026年03月20日</div>
+  </div>
+  <div class="header-right">
+    <div class="mkt-badge"><div class="val">12.1</div><div class="lbl">情绪温度</div></div>
+    <div class="dv"></div>
+    <div class="mkt-badge"><div class="val">3</div><div class="lbl">焦点连板</div></div>
+    <div class="dv"></div>
+    <div class="mkt-badge"><div class="val">22</div><div class="lbl">首板数量</div></div>
+  </div>
+</header>
+
+<!-- ② 收盘点评（顶部） -->
+<div class="st an d1"><h2>收盘点评</h2><span class="badge">2026年03月20日</span></div>
+<div class="commentary an d1">
+  <ul>
+    <li data-n="1">【收盘点评】</li>
+<li data-n="2">市场走势割裂；一方面是4700家个股下跌；一方面是宁德时代带动之下，创业板指数创出一个阶段新高。目前市场运行分歧较大，各类逻辑难以在盘中走出持续性，当前仍需耐心等待市场企稳。</li>
+<li data-n="3">从走势来看，市场全天冲高回落，沪指震荡调整失守半年线，创业板指盘中刷新年内新高后快速回落。截至收盘，沪指跌1.24%，深成指跌0.25%，创业板指涨1.3%。从交易主观感受来看，黄白二线分化明显，中小盘股普跌，<strong>微盘股</strong>指数跌超3%杀伤力较大。沪深两市成交额2.29万亿，较上一个交易日<strong>放量</strong>1759亿。盘面上，全市场连续两日超4700只个股下跌。</li>
+<li data-n="4">从板块来看，上涨板块仅有电池/储能/电力方向。板块内个股反复活跃，华电辽能5<strong>连板</strong>，韶能股份3<strong>连板</strong>，华电能源2<strong>连板</strong>，银星能源、广西能源<strong>涨停</strong>。储能概念快速走强，首航新能<strong>涨停</strong>续创<strong>历史新高</strong>，正泰电源反包<strong>涨停</strong>。算力硬件概念盘中走高，源杰科技触及20CM<strong>涨停</strong>，新易盛涨超8%创<strong>历史新高</strong>。</li>
+<li data-n="5">下跌方面，化工板块下挫，金牛化工、潞化科技、金正大、红宝丽跌停。算力租赁概念集体走弱，协创数据触及<strong>20cm</strong>跌停，宏景科技、大位科技、首都在线等多股大跌。</li>
+<li data-n="6">指标信号<strong>银手指</strong>区间，市场仍需谨慎。值得一提的是，行情走势极致也意味着反转即将到来，所以也无需恐慌，行情下周大概率能回暖。</li>
+
+  </ul>
+</div>
+
+<!-- ③ 涨停核心指标 -->
+<div class="st an d2"><h2>涨停核心指标</h2><span class="badge">TODAY vs PREV</span></div>
+<div class="metrics-grid an d2">
+  
+      <div class="metric-card">
+        <div class="metric-name">涨跌停比</div>
+        <div class="metric-val">39:23</div>
+        <div class="metric-prev">↑ 前值 36:14</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-name">昨日涨停表现</div>
+        <div class="metric-val">0.82%</div>
+        <div class="metric-prev">→ 前值0.95%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-name">连板率</div>
+        <div class="metric-val">33.33%</div>
+        <div class="metric-prev">↑ 前值38.89%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-name">封板率</div>
+        <div class="metric-val">60.00%</div>
+        <div class="metric-prev">↑ 前值73.47%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-name">连板收益率</div>
+        <div class="metric-val">-0.13%</div>
+        <div class="metric-prev">↑ 前值1.76%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-name">连板溢价率</div>
+        <div class="metric-val">-0.44%</div>
+        <div class="metric-prev">↑ 前值3.09%</div>
+      </div>
+</div>
+
+<!-- ④ 情绪温度走势 -->
+<div class="chart-section an d3">
+  <div class="st" style="margin-bottom:0"><h2>情绪温度走势</h2><span class="badge">近3月</span></div>
+  <div class="chart-wrapper"><canvas id="emotionChart"></canvas></div>
+  <div class="chart-legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#e8403a"></div>情绪温度（今日: 12.1）</div>
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(56,132,255,.6)"></div>过热线 (80)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(56,132,255,.3)"></div>过冷线 (20)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#ff4d4d"></div>过热点 ≥80</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#6baeff"></div>过冷点 ≤20</div>
+  </div>
+</div>
+
+<!-- ⑤ 焦点股 -->
+<div class="st an d3"><h2>今日焦点股</h2><span class="badge">3只</span></div>
+<div class="focus-grid an d3">
+  
+      <div class="focus-card">
+        <div class="focus-header">
+          <div>
+            <div class="focus-name">深华发A</div>
+            <div class="focus-code">000020</div>
+          </div>
+          <div class="focus-pct">+10.0%</div>
+        </div>
+        <div class="focus-industry">电子 · 光学光电子 · 面板</div>
+        <div class="focus-meta">
+          <div><div class="focus-meta-label">总市值</div><div class="focus-meta-val">45.1亿</div></div>
+          <div><div class="focus-meta-label">成交额</div><div class="focus-meta-val">1.2亿</div></div>
+          <div><div class="focus-meta-label">本月涨幅</div><div class="focus-meta-val" style="color:var(--red)">+54.6%</div></div>
+          <div><div class="focus-meta-label">连涨天数</div><div class="focus-meta-val">5天</div></div>
+        </div>
+        <div class="days-badge">🔥 5连板</div>
+      </div>
+      <div class="focus-card">
+        <div class="focus-header">
+          <div>
+            <div class="focus-name">华电辽能</div>
+            <div class="focus-code">600396</div>
+          </div>
+          <div class="focus-pct">+10.02%</div>
+        </div>
+        <div class="focus-industry">公用事业 · 电力 · 火电</div>
+        <div class="focus-meta">
+          <div><div class="focus-meta-label">总市值</div><div class="focus-meta-val">92.2亿</div></div>
+          <div><div class="focus-meta-label">成交额</div><div class="focus-meta-val">24.2亿</div></div>
+          <div><div class="focus-meta-label">本月涨幅</div><div class="focus-meta-val" style="color:var(--red)">+86.3%</div></div>
+          <div><div class="focus-meta-label">连涨天数</div><div class="focus-meta-val">5天</div></div>
+        </div>
+        <div class="days-badge">🔥 5连板</div>
+      </div>
+      <div class="focus-card">
+        <div class="focus-header">
+          <div>
+            <div class="focus-name">韶能股份</div>
+            <div class="focus-code">000601</div>
+          </div>
+          <div class="focus-pct">+10.0%</div>
+        </div>
+        <div class="focus-industry">公用事业 · 电力 · 水电</div>
+        <div class="focus-meta">
+          <div><div class="focus-meta-label">总市值</div><div class="focus-meta-val">86.6亿</div></div>
+          <div><div class="focus-meta-label">成交额</div><div class="focus-meta-val">10.2亿</div></div>
+          <div><div class="focus-meta-label">本月涨幅</div><div class="focus-meta-val" style="color:var(--red)">+43.8%</div></div>
+          <div><div class="focus-meta-label">连涨天数</div><div class="focus-meta-val">3天</div></div>
+        </div>
+        <div class="days-badge">🔥 3连板</div>
+      </div>
+</div>
+
+<!-- ⑥ 连板天梯 -->
+<div class="st an d4"><h2>连板天梯</h2><span class="badge">高位板 · 两连板 · 首板</span></div>
+<div class="ladder-grid an d4">
+  
+    <div class="ladder-col">
+      <div class="ladder-header">
+        <div class="ladder-title" style="color:var(--red)">🏆 高位板（3板+）</div>
+        <div class="ladder-count">4只</div>
+      </div>
+      
+        <div class="stock-row">
+          <div class="stock-rank">01</div>
+          <div class="stock-name-wrap">
+            <div class="stock-name">华电辽能</div>
+            <div class="stock-code">600396</div>
+          </div>
+          <div class="stock-tags"><span class="tag ">绿电</span><span class="tag ">氢能</span><span class="tag ">央企</span></div>
+          <div class="stock-heat">#1</div>
+        </div>
+        <div class="stock-row">
+          <div class="stock-rank">02</div>
+          <div class="stock-name-wrap">
+            <div class="stock-name">韶能股份</div>
+            <div class="stock-code">000601</div>
+          </div>
+          <div class="stock-tags"><span class="tag ">算电协同</span><span class="tag ">储能</span><span class="tag ">生物质发电</span></div>
+          <div class="stock-heat">#11</div>
+        </div>
+        <div class="stock-row">
+          <div class="stock-rank">03</div>
+          <div class="stock-name-wrap">
+            <div class="stock-name">深华发A</div>
+            <div class="stock-code">000020</div>
+          </div>
+          <div class="stock-tags"><span class="tag ">深圳旧改</span><span class="tag ">液晶显示</span><span class="tag ">物业经营</span></div>
+          <div class="stock-heat">#40</div>
+        </div>
+        <div class="stock-row">
+          <div class="stock-rank">04</div>
+          <div class="stock-name-wrap">
+            <div class="stock-name">大胜达</div>
+            <div class="stock-code">603687</div>
+          </div>
+          <div class="stock-tags"><span class="tag ">拟投GPU</span><span class="tag ">钙钛矿设备</span><span class="tag ">参股曲速科技</span></div>
+          <div class="stock-heat">#50</div>
+        </div>
+    </div>
+  
+    <div class="ladder-col">
+      <div class="ladder-header">
+        <div class="ladder-title" style="color:var(--gold)">⚡ 两连板</div>
+        <div class="ladder-count">3只</div>
+      </div>
+      
+        <div class="stock-row">
+          <div class="stock-rank">01</div>
+          <div class="stock-name-wrap">
+            <div class="stock-name">华电能源</div>
+            <div class="stock-code">600726</div>
+          </div>
+          <div class="stock-tags"><span class="tag blue">绿电转型</span><span class="tag blue">热电联产</span><span class="tag blue">煤炭概念</span></div>
+          <div class="stock-heat">#2</div>
+        </div>
+        <div class="stock-row">
+          <div class="stock-rank">02</div>
+          <div class="stock-name-wrap">
+            <div class="stock-name">东方新能</div>
+            <div class="stock-code">002310</div>
+          </div>
+          <div class="stock-tags"><span class="tag blue">重大资产重组</span><span class="tag blue">风光电站</span><span class="tag blue">资产注入预期</span></div>
+          <div class="stock-heat">#3</div>
+        </div>
+        <div class="stock-row">
+          <div class="stock-rank">03</div>
+          <div class="stock-name-wrap">
+            <div class="stock-name">国新能源</div>
+            <div class="stock-code">600617</div>
+          </div>
+          <div class="stock-tags"><span class="tag blue">天然气</span><span class="tag blue">山西管网</span><span class="tag blue">山西国资</span></div>
+          <div class="stock-heat">#33</div>
+        </div>
+    </div>
+  
+    <div class="ladder-col">
+      <div class="ladder-header">
+        <div class="ladder-title" style="color:#e8eaf0">🌱 首板精选 TOP8</div>
+        <div class="ladder-count">8只</div>
+      </div>
+      
+        <div class="stock-row">
+          <div class="stock-rank">01</div>
+          <div class="stock-name-wrap">
+            <div class="stock-name">国晟科技</div>
+            <div class="stock-code">603778.SH</div>
+          </div>
+          <div class="stock-tags"><span class="tag ">异质结光伏</span><span class="tag ">储能</span><span class="tag ">固态电池</span></div>
+          <div class="stock-heat">#4</div>
+        </div>
+        <div class="stock-row">
+          <div class="stock-rank">02</div>
+          <div class="stock-name-wrap">
+            <div class="stock-name">上能电气</div>
+            <div class="stock-code">300827.SZ</div>
+          </div>
+          <div class="stock-tags"><span class="tag ">光伏设备</span><span class="tag ">储能PCS龙头</span><span class="tag ">一带一路</span></div>
+          <div class="stock-heat">#10</div>
+        </div>
+        <div class="stock-row">
+          <div class="stock-rank">03</div>
+          <div class="stock-name-wrap">
+            <div class="stock-name">中利集团</div>
+            <div class="stock-code">002309.SZ</div>
+          </div>
+          <div class="stock-tags"><span class="tag ">钙钛矿电池</span><span class="tag ">厦门国资</span><span class="tag ">光伏储能</span></div>
+          <div class="stock-heat">#12</div>
+        </div>
+        <div class="stock-row">
+          <div class="stock-rank">04</div>
+          <div class="stock-name-wrap">
+            <div class="stock-name">兆新股份</div>
+            <div class="stock-code">002256.SZ</div>
+          </div>
+          <div class="stock-tags"><span class="tag ">盐湖提锂</span><span class="tag ">业绩预增</span><span class="tag ">光伏</span></div>
+          <div class="stock-heat">#16</div>
+        </div>
+        <div class="stock-row">
+          <div class="stock-rank">05</div>
+          <div class="stock-name-wrap">
+            <div class="stock-name">正泰电源</div>
+            <div class="stock-code">002150.SZ</div>
+          </div>
+          <div class="stock-tags"><span class="tag ">光伏设备</span><span class="tag ">储能一体机</span><span class="tag ">外销</span></div>
+          <div class="stock-heat">#24</div>
+        </div>
+        <div class="stock-row">
+          <div class="stock-rank">06</div>
+          <div class="stock-name-wrap">
+            <div class="stock-name">银星能源</div>
+            <div class="stock-code">000862.SZ</div>
+          </div>
+          <div class="stock-tags"><span class="tag ">风电技改</span><span class="tag ">绿电直连</span><span class="tag ">资产注入</span></div>
+          <div class="stock-heat">#28</div>
+        </div>
+        <div class="stock-row">
+          <div class="stock-rank">07</div>
+          <div class="stock-name-wrap">
+            <div class="stock-name">盈方微</div>
+            <div class="stock-code">000670.SZ</div>
+          </div>
+          <div class="stock-tags"></div>
+          <div class="stock-heat">#36</div>
+        </div>
+        <div class="stock-row">
+          <div class="stock-rank">08</div>
+          <div class="stock-name-wrap">
+            <div class="stock-name">京投发展</div>
+            <div class="stock-code">600683.SH</div>
+          </div>
+          <div class="stock-tags"><span class="tag ">拟剥离地产</span><span class="tag ">北京国资</span><span class="tag ">TOD轨道物业</span></div>
+          <div class="stock-heat">#39</div>
+        </div>
+    </div>
+</div>
+
+<!-- ⑦ 自选股事件 -->
+<div class="st an d5"><h2>自选股近期重要事件</h2><span class="badge">5条</span></div>
+<div class="events-section an d5">
+  <table class="events-table">
+    <thead><tr><th>日期</th><th>股票</th><th>事件</th><th>详情</th></tr></thead>
+    <tbody>
+        <tr>
+          <td class="mono muted nowrap">2026/03/12</td>
+          <td>
+            <div class="fw6 fs14">海南矿业</div>
+            <div class="mono fs10 muted">601969</div>
+          </td>
+          <td><span class="event-type up">涨停</span></td>
+          <td><div class="event-detail">油气项目+拟收购萤石矿+铁矿石+回购。首板涨停</div></td>
+        </tr>
+        <tr>
+          <td class="mono muted nowrap">2026/03/09</td>
+          <td>
+            <div class="fw6 fs14">海南矿业</div>
+            <div class="mono fs10 muted">601969</div>
+          </td>
+          <td><span class="event-type up">涨停</span></td>
+          <td><div class="event-detail">油气项目+拟收购萤石矿+铁矿石+回购。首板涨停</div></td>
+        </tr>
+        <tr>
+          <td class="mono muted nowrap">2026/03/09</td>
+          <td>
+            <div class="fw6 fs14">科瑞技术</div>
+            <div class="mono fs10 muted">002957</div>
+          </td>
+          <td><span class="event-type down">跌停</span></td>
+          <td><div class="event-detail">2026年03月09日 09时48分12秒跌停</div></td>
+        </tr>
+        <tr>
+          <td class="mono muted nowrap">2026/03/03</td>
+          <td>
+            <div class="fw6 fs14">中毅达</div>
+            <div class="mono fs10 muted">600610</div>
+          </td>
+          <td><span class="event-type down">跌停</span></td>
+          <td><div class="event-detail">跌停原因：板块回调+资金流出+此前涨幅</div></td>
+        </tr>
+        <tr>
+          <td class="mono muted nowrap">2026/03/03</td>
+          <td>
+            <div class="fw6 fs14">科瑞技术</div>
+            <div class="mono fs10 muted">002957</div>
+          </td>
+          <td><span class="event-type up">涨停</span></td>
+          <td><div class="event-detail">半导体设备+光模块+AI眼镜+低空经济。首板涨停</div></td>
+        </tr></tbody>
+  </table>
+</div>
+
+</div><!-- /container -->
+<script>
+const eLabels = ["12/16", "12/17", "12/18", "12/19", "12/22", "12/23", "12/24", "12/25", "12/26", "12/29", "12/30", "12/31", "01/05", "01/06", "01/07", "01/08", "01/09", "01/12", "01/13", "01/14", "01/15", "01/16", "01/19", "01/20", "01/21", "01/22", "01/23", "01/26", "01/27", "01/28", "01/29", "01/30", "02/02", "02/03", "02/04", "02/05", "02/06", "02/09", "02/10", "02/11", "02/12", "02/13", "02/24", "02/25", "02/26", "02/27", "03/02", "03/03", "03/04", "03/05", "03/06", "03/09", "03/10", "03/11", "03/12", "03/13", "03/16", "03/17", "03/18", "03/19", "03/20"];
+const eVals   = [20.04, 66.58, 52.21, 82.18, 54.81, 27.75, 75.73, 69.18, 34.22, 36.58, 33.72, 45.34, 76.69, 75.25, 39.8, 68.35, 71.81, 75.91, 29.75, 50.37, 40.86, 43.42, 64.59, 40.85, 56.66, 65.44, 72.09, 29.36, 35.29, 31.83, 32.99, 44.91, 14.11, 88.86, 59.51, 29.6, 50.29, 84.39, 40.13, 37.48, 38.5, 28.13, 73.18, 68.51, 45.42, 59.79, 20.88, 11.75, 31.88, 74.49, 77.78, 25.96, 82.79, 37.58, 27.25, 27.4, 51.88, 15.83, 64.87, 9.22, 12.06];
+const n = eLabels.length;
+const ctx = document.getElementById('emotionChart').getContext('2d');
+const grad = ctx.createLinearGradient(0, 0, 0, 240);
+grad.addColorStop(0,   'rgba(232,64,58,0.35)');
+grad.addColorStop(0.7, 'rgba(232,64,58,0.05)');
+grad.addColorStop(1,   'rgba(232,64,58,0)');
+new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: eLabels,
+    datasets: [
+      {
+        label: '情绪温度', data: eVals,
+        borderColor: '#e8403a', borderWidth: 2,
+        backgroundColor: grad, fill: true, tension: 0.35,
+        pointRadius: eVals.map(v => (v >= 80 || v <= 20) ? 5 : 2),
+        pointBackgroundColor: eVals.map(v => v >= 80 ? '#ff4d4d' : v <= 20 ? '#6baeff' : '#e8403a'),
+        pointBorderColor: 'transparent'
+      },
+      { label:'过热线', data: new Array(n).fill(80), borderColor:'rgba(56,132,255,.45)', borderWidth:1, borderDash:[6,4], pointRadius:0, fill:false },
+      { label:'过冷线', data: new Array(n).fill(20), borderColor:'rgba(56,132,255,.25)', borderWidth:1, borderDash:[4,4], pointRadius:0, fill:false }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode:'index', intersect:false },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor:'#1a1e2a', borderColor:'rgba(232,64,58,.4)', borderWidth:1,
+        titleColor:'#e8eaf0', bodyColor:'#9ca3af', padding:10,
+        callbacks: {
+          label(c) {
+            if (c.datasetIndex !== 0) return null;
+            const v = c.parsed.y;
+            let s = `情绪温度: ${v.toFixed(1)}`;
+            if (v >= 80) s += ' 🔥 过热';
+            else if (v <= 20) s += ' ❄️ 过冷';
+            return s;
+          }
+        }
+      }
+    },
+    scales: {
+      x: { grid:{ color:'rgba(255,255,255,.04)' }, ticks:{ color:'#4b5563', font:{ family:'JetBrains Mono', size:10 }, maxTicksLimit:12, maxRotation:0 } },
+      y: { min:0, max:100, grid:{ color:'rgba(255,255,255,.05)' }, ticks:{ color:'#4b5563', font:{ family:'JetBrains Mono', size:10 }, stepSize:20 } }
+    }
+  }
+});
+</script>
+</body>
+</html>
